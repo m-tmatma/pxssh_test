@@ -48,8 +48,8 @@ def switch_to_root(ssh, root_pass: str):
     # root ユーザーのプロンプトが表示されるまで待つ
     index = ssh.expect_list(
         [
-            re.compile(r".*# ".encode()),
-            re.compile(r"su: .*".encode()),
+            re.compile(r".*# ".encode()),   # root ユーザーのプロンプト
+            re.compile(r"su: .*".encode()), # "su: Authentication failure" or "su: 認証失敗"
         ], timeout = 10)
     if index != 0:
         print("failed to switch to root")
