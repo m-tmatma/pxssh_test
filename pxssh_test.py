@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+# pxssh を利用した "su -" のテスト
 import sys
 import re
 
