@@ -2,9 +2,7 @@
 
 import sys
 
-# pexpectライブラリからpxsshモジュールをインポート
 from pexpect import pxssh
-# timeモジュールをインポート
 import time
 
 def login_ssh(server: str, username: str, password: str):
@@ -33,10 +31,7 @@ def run_command(ssh, command: str):
     print(ssh.after.decode(encoding='utf-8'), flush=True)
 
 def send_commands(ssh):
-    # テキストファイル「test.txt」を作成する
     run_command(ssh, "touch test.txt")
-
-    # カレントディレクトリのファイルを表示する
     run_command(ssh, "ls -l")
 
 def make_su(ssh, root_pass: str):
@@ -75,5 +70,4 @@ if __name__ == "__main__":
     make_su(ssh, root_pass=root_pass)
     send_commands_root(ssh)
 
-    # SSHサーバーからログアウト
     ssh.logout()
