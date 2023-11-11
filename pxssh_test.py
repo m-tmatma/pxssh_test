@@ -34,7 +34,7 @@ def send_commands(ssh):
     run_command(ssh, "touch test.txt")
     run_command(ssh, "ls -l")
 
-def make_su(ssh, root_pass: str):
+def switch_to_root(ssh, root_pass: str):
     ssh.sendline("su -")
 
     # rootのパスワードを入力するプロンプトが表示されるまで待つ
@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
     ssh = login_ssh(server, username, password)
     send_commands(ssh)
-    make_su(ssh, root_pass=root_pass)
+    switch_to_root(ssh, root_pass=root_pass)
     send_commands_root(ssh)
 
     ssh.logout()
