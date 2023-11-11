@@ -12,7 +12,8 @@ def login_ssh(server: str, username: str, password: str):
     ssh = pxssh.pxssh()
     ssh.login(server=server,
             username=username,
-            password=password)
+            password=password,
+            port=22)
     print("------------before -----------------------------")
     print(ssh.before.decode(encoding='utf-8'), flush=True)
     print("------------after -----------------------------")
