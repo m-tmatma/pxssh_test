@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import sys
+import re
 
 from pexpect import pxssh
 import time
@@ -45,7 +46,14 @@ def switch_to_root(ssh, root_pass: str):
     ssh.sendline(root_pass)
 
     # root ユーザーのプロンプトが表示されるまで待つ
-    ssh.expect(r".*# ")
+    index = ssh.expect_list(
+        [
+            re.compile(r".*# ".encode()),
+            re.compile(r"su: .*".encode()),
+        ], timeout = 10)
+    if index != 0:
+        print("failed to switch to root")
+        sys.exit(1)
     print(ssh.before.decode(encoding='utf-8'), flush=True)
     print(ssh.after.decode(encoding='utf-8'), flush=True)
 
