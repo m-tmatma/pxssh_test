@@ -11,6 +11,13 @@ def login_ssh(server: str, username: str, password: str):
     ssh = pxssh.pxssh(options={
                     "StrictHostKeyChecking": "no",
                     "UserKnownHostsFile": "/dev/null"})
+
+    ssh.UNIQUE_PROMPT = r"[\$\#] "
+    ssh.PROMPT = ssh.UNIQUE_PROMPT
+    ssh.PROMPT_SET_SH = r"PS1='\$ '"
+    ssh.PROMPT_SET_CSH = r"set prompt='\$ '"
+    ssh.PROMPT_SET_ZSH = "prompt restore;\nPS1='%(!.#.$) '"
+
     ssh.login(server=server,
             username=username,
             password=password,
