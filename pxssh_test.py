@@ -12,6 +12,7 @@ def login_ssh(server: str, username: str, password: str):
                     "StrictHostKeyChecking": "no",
                     "UserKnownHostsFile": "/dev/null"})
 
+    # プロンプトの設定
     ssh.UNIQUE_PROMPT = r"[\$\#] "
     ssh.PROMPT = ssh.UNIQUE_PROMPT
     ssh.PROMPT_SET_SH = r"PS1='\$ '"
