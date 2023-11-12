@@ -4,7 +4,6 @@ import sys
 import re
 
 from pexpect import pxssh
-import time
 
 def login_ssh(server: str, username: str, password: str):
     # ログイン情報を設定しSSHサーバーにログイン
