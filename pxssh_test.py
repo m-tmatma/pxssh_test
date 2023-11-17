@@ -6,6 +6,7 @@ import re
 from pexpect import pxssh
 
 def login_ssh(server: str, username: str, password: str):
+    '''SSHサーバーにログインする'''
     # ログイン情報を設定しSSHサーバーにログイン
     ssh = pxssh.pxssh(options={
                     "StrictHostKeyChecking": "no",
