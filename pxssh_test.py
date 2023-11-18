@@ -37,7 +37,7 @@ def run_command(ssh, command: str):
     while True:
         index = ssh.expect_list(
             [
-                re.compile(r".*(#|\$) ".encode()),   # root ユーザーのプロンプト
+                re.compile(r".*(#|\$) ".encode()),   # 一般ユーザーまたはroot ユーザーのプロンプト
                 re.compile(r"\n".encode()),
             ], timeout = 10)
         print(ssh.before.decode(encoding='utf-8'), flush=True, end="")
