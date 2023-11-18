@@ -22,33 +22,40 @@ def login_ssh(server: str, username: str, password: str):
             username=username,
             password=password,
             port=22)
-    print("------------before -----------------------------")
-    print(ssh.before.decode(encoding='utf-8'), flush=True)
-    print("------------after -----------------------------")
-    print(ssh.after.decode(encoding='utf-8'), flush=True)
+    print(ssh.before.decode(encoding='utf-8'), flush=True, end="")
+    print(ssh.after.decode(encoding='utf-8'), flush=True, end="")
     return ssh
 
-def run_command(ssh, command: str):
+def sendline_and_print(ssh, command: str):
+    print(f"{command}")
     ssh.sendline(command)
 
+def run_command(ssh, command: str):
+    sendline_and_print(ssh, command)
+
     # プロンプトが表示されるまで待つ
-    ssh.expect(r".*(#|\$) ")
-    print("------------before -----------------------------")
-    print(ssh.before.decode(encoding='utf-8'), flush=True)
-    print("------------after -----------------------------")
-    print(ssh.after.decode(encoding='utf-8'), flush=True)
+    while True:
+        index = ssh.expect_list(
+            [
+                re.compile(r".*(#|\$) ".encode()),   # root ユーザーのプロンプト
+                re.compile(r"\n".encode()),
+            ], timeout = 10)
+        print(ssh.before.decode(encoding='utf-8'), flush=True, end="")
+        print(ssh.after.decode(encoding='utf-8'), flush=True, end="")
+        if index == 0:
+            break
 
 def send_commands(ssh):
     run_command(ssh, "touch test.txt")
     run_command(ssh, "ls -l")
 
 def switch_to_root(ssh, root_pass: str):
-    ssh.sendline("su -")
+    sendline_and_print(ssh, "su -")
 
     # rootのパスワードを入力するプロンプトが表示されるまで待つ
     ssh.expect(r".*: ")
-    print(ssh.before.decode(encoding='utf-8'), flush=True)
-    print(ssh.after.decode(encoding='utf-8'), flush=True)
+    print(ssh.before.decode(encoding='utf-8'), flush=True, end="")
+    print(ssh.after.decode(encoding='utf-8'), flush=True, end="")
 
     ssh.sendline(root_pass)
 
@@ -61,8 +68,8 @@ def switch_to_root(ssh, root_pass: str):
     if index != 0:
         print("failed to switch to root")
         sys.exit(1)
-    print(ssh.before.decode(encoding='utf-8'), flush=True)
-    print(ssh.after.decode(encoding='utf-8'), flush=True)
+    print(ssh.before.decode(encoding='utf-8'), flush=True, end="")
+    print(ssh.after.decode(encoding='utf-8'), flush=True, end="")
 
 def send_commands_root(ssh):
     run_command(ssh, "ls -l")
