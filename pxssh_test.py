@@ -73,6 +73,7 @@ def switch_to_root(ssh, root_pass: str):
 
 def send_commands_root(ssh):
     run_command(ssh, "ls -l")
+    run_command(ssh, "find /etc")
 
     run_command(ssh, "id")
     run_command(ssh, "exit")
